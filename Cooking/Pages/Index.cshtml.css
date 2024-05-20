@@ -45,3 +45,7 @@ h2 {
 p {
     color: #666;
 }
+img {
+    max-width: 20%;
+    height: auto;
+}

@@ -77,10 +77,14 @@ namespace Cooking.Controller
         [HttpPost]
         public async Task<ActionResult<Author>> PostAuthor(Author author)
         {
-            _context.Authors.Add(author);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
+        
+            if (!AuthorExists(author.adress))
+            {
+                _context.Authors.Add(author);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
+            }
+            return BadRequest();
         }
 
         // DELETE: api/Authors/5
@@ -102,6 +106,10 @@ namespace Cooking.Controller
         private bool AuthorExists(int id)
         {
             return _context.Authors.Any(e => e.Id == id);
+        }
+        private bool AuthorExists(String adress)
+        {
+            return _context.Authors.Any(e => e.adress == adress);
         }
     }
 }
